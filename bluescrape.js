@@ -15,7 +15,7 @@ var img;
 
 //This function is our main, where we scrape the data
 casper.start("http://www.dolarblue.net/", function() {
-  img = this.getElementAttribute('div > img', 'src')
+  img = this.getElementAttribute('div > img[src^="http://dolarblue"]', 'src')
   fs.write('filename.txt', img, 'w');
 });
 

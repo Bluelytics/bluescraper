@@ -4,3 +4,6 @@ lib/
 local/
 *.pyc
 casperjs/
+phantomjs/
+*.png
+*.txt

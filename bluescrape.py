@@ -1,5 +1,6 @@
 from subprocess import call
-import math, re, Image
+import math, re
+from PIL import Image
 
 call(["casperjs", "bluescrape.js"])
 

@@ -2,12 +2,12 @@ from subprocess import call
 import math, re
 from PIL import Image, ImageEnhance
 
-#call(["casperjs", "bluescrape.js"])
-#
-#with open("filename.txt", 'rb') as f:
-#  filename = f.readlines()
-#
-#call(["wget", "-O", "dolar.png", filename[0]])
+call(["casperjs", "bluescrape.js"])
+
+with open("filename.txt", 'rb') as f:
+  filename = f.readlines()
+
+call(["wget", "-O", "dolar.png", filename[0]])
 
 im = Image.open("dolar.png")
 pix = im.load()
@@ -105,7 +105,7 @@ try:
         valorVenta = re.sub("[^0-9\.,]", "", tmp[0]).replace(',', '.')
     
 
-    call(["../bluelytics/add_blue.sh", valorCompra, valorVenta, 'dolarblue.net'])
+    call(["../bluelytics/add_blue.sh", valorCompra, valorVenta, "dolarblue.net"])
 
 except IOError:
     print "Cannot read value files"

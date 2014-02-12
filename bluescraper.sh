@@ -6,3 +6,4 @@ cd $DIR
 . $DIR/bin/activate
 python $DIR/bluescrape.py
 python $DIR/ambitoscrape.py
+python $DIR/lanacionscrape.py

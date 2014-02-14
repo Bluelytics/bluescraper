@@ -7,3 +7,4 @@ cd $DIR
 python $DIR/bluescrape.py
 python $DIR/ambitoscrape.py
 python $DIR/lanacionscrape.py
+python $DIR/ofiscrape.py

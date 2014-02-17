@@ -7,3 +7,4 @@ casperjs/
 phantomjs/
 *.png
 *.txt
+*.json

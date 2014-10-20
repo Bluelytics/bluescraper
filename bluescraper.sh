@@ -8,3 +8,4 @@ python $DIR/bluescrape.py
 python $DIR/ambitoscrape.py
 python $DIR/lanacionscrape.py
 python $DIR/ofiscrape.py
+python $DIR/elcronistascrape.py

@@ -16,8 +16,8 @@ var fs = require('fs');
 
 //This function is our main, where we scrape the data
 casper.start(rURL, function() {
-  var dolarVenta = this.getHTML('div#venta > big');
-  var dolarCompra = this.getHTML('div#compra > big');
+  var dolarVenta = this.getHTML('div.data-row.sale > span.data-value > strong');
+  var dolarCompra = this.getHTML('div.data-row.buy > span.data-value');
 
   var out = {'venta': dolarVenta.replace(',', '.'), 'compra': dolarCompra.replace(',', '.')};
 

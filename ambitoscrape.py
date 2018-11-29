@@ -1,9 +1,8 @@
 from subprocess import call
 import json
+import requests
 
-call(["casperjs", "ambitoscrape.js"])
+r = requests.get('https://mercados.ambito.com/dolar/informal/variacion')
+data = r.json()
 
-with open("ambito_out.json", 'rb') as f:
-  values = json.loads(f.read())
-
-call(["../bluelytics/add_blue.sh", values['compra'], values['venta'], 'ambito_financiero'])
+call(["../bluelytics/add_blue.sh", data['compra'], data['venta'], 'ambito_financiero'])

@@ -5,4 +5,4 @@ r = requests.get('https://api-contenidos.lanacion.com.ar/json/V3/economia/cotiza
 
 if r:
     data = r.json()
-    call(["../bluelytics/add_blue.sh", data['compra'], data['venta'], 'invertir_online'])
+    call(["../bluelytics/add_blue.sh", data['compra'].replace(',', '.'), data['venta'].replace(',', '.'), 'invertir_online'])

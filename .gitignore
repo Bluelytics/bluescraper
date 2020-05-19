@@ -1,11 +1,7 @@
-bin/
-.apikey
-include/
-lib/
-local/
 *.pyc
-casperjs/
-phantomjs/
 *.png
 *.txt
 *.json
+docker_run.sh
+.env
+test/

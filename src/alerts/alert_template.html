@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bluelytics</title>
+    <style>
+
+    @font-face {
+      font-family: 'GT Walsheim';
+
+      src: url('fonts/gtwalsheim.eot');
+      src: url('fonts/gtwalsheim.eot?#iefix') format('embedded-opentype'), url('fonts/gtwalsheim.woff') format('woff'), url('fonts/gtwalsheim.ttf') format('truetype'), url('fonts/gtwalsheim.svg#glyphicons_halflingsregular') format('svg');
+    }
+    body.bluelytics {
+      font-family:'GT Walsheim'
+    }
+    h2.bluetitle{
+      font-size:35px;
+      margin-top:75px;
+      margin-left:20%;
+      margin-right:20px;
+    }
+
+    h3.rateTitle{
+      font-size:45px;
+      text-align: center;
+      margin-top:40px;
+    }
+    h4.buysell{
+      font-size:25px;
+      text-align: center;
+    }
+    h5.rate{
+      font-size:50px;
+      text-align: center;
+    }
+    div.footer{
+      margin-top:40px;
+      font-size:15px;
+      text-align:right;
+      margin-right:10px;
+      font-style: italic;
+    }
+    </style>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body class='bluelytics'>
+  <div class="container">
+    <h2 class='bluetitle'><img width=100 src="img/logo.png">Bluelytics</h2>
+
+    <span style="color:#221199;">
+      <div class="row">
+        <div class='col-xs-12'>
+          <h3 class="rateTitle">Dólar Blue/Libre</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <h4 class='buysell'>Compra</h4>
+        </div>
+        <div class="col-xs-6">
+          <h4 class='buysell'>Venta</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <h5 class='rate'>%Blue_Compra%</h4>
+        </div>
+        <div class="col-xs-6">
+          <h5 class='rate'>%Blue_Venta%</h4>
+        </div>
+      </div>
+    </span>
+
+    <span style="color:#229922;">
+      <div class="row">
+        <div class='col-xs-12'>
+          <h3 class="rateTitle">Dólar Oficial</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <h4 class='buysell'>Compra</h4>
+        </div>
+        <div class="col-xs-6">
+          <h4 class='buysell'>Venta <small>(+30%)</small></h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <h5 class='rate'>%Oficial_Compra%</h4>
+        </div>
+        <div class="col-xs-6">
+          <h5 class='rate'>%Oficial_Venta%</h4>
+        </div>
+      </div>
+    </span>
+
+    <div class="footer">Actualización a la fecha: %FECHA%.<br>
+      Para mas información visita el sitio web: <em>www.bluelytics.com.ar</em></div>
+  </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

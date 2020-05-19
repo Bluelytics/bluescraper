@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/d3.v5.min.js"></script>
+
+<style>
+    body{
+        font-family:"Noto Sans Light";
+    }
+
+    .valueDolar{
+        font-size: 2.5em;
+    }
+
+    .percentChange {
+        text-align: center;
+        font-size: 2em;
+    }
+    
+    .positive {
+        color:steelblue;
+    }
+
+    .negative {
+        color: orangered;
+    }
+
+
+</style>
+
+</head>
+<body>
+
+    <div class="container-fluid" style="width:960px; height:720px">
+        <h2 style="text-align: center;"> 
+            <img src="img/logo.png" class="logo" style="width:48px; height:48px"> Resumen semanal Dólar Blue</h2>
+        <div class="row">
+            <div class="col-sm-3 offset-sm-2">
+                <p class="valueDolar">%Value_Inicio%</p>
+            </div>
+            <div class="col-sm-2">
+                <svg class="bi bi-arrow-right" width="4em" height="4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10.146 4.646a.5.5 0 01.708 0l3 3a.5.5 0 010 .708l-3 3a.5.5 0 01-.708-.708L12.793 8l-2.647-2.646a.5.5 0 010-.708z" clip-rule="evenodd"/>
+                <path fill-rule="evenodd" d="M2 8a.5.5 0 01.5-.5H13a.5.5 0 010 1H2.5A.5.5 0 012 8z" clip-rule="evenodd"/>
+              </svg></div>
+            <div class="col-sm-3">
+                <p class="valueDolar">%Value_Fin%</p>
+            </div>
+        </div>
+        <p class="percentChange positive">+%Delta_Value% (%Delta_Percent%%)</p>
+
+        <div class="container-fluid" id='blue'></div>
+        <small class="float-sm-right" style="margin-top:15px;">https://bluelytics.com.ar - Semana %Fecha_Inicio% / %Fecha_Fin%</small>
+</div>
+    <script>
+
+        var margin = {top: 20, right: 60, bottom: 30, left: 60},
+            width = 800 - margin.left - margin.right,
+            height = 450 - margin.top - margin.bottom;
+        // Example: [{x:"Lunes", y:127.23},{x:"Martes", y:128.50},{x:"Miércoles", y:130.40},{x:"Jueves", y:138.30}, {x:"Viernes", y:140.10}]
+        var data = %Array_Data%;
+        var weekdays = ["Lunes","Martes","Miércoles","Jueves","Viernes"];
+        var formatDay = function(d) {
+            return weekdays[d % 5];      
+        }
+        var svg = d3.select("#blue").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+        var x = d3.scalePoint()
+            .domain(weekdays)
+            .rangeRound([0, width])
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x).tickSize(-5))
+            .call(g => g.selectAll("text")
+                .attr("font-size", "20px")
+                .attr("transform", "translate(0, 5)"));
+        
+        var minValue = d3.min(data, function(d) { return +d.y; })
+        var maxValue = d3.max(data, function(d) { return +d.y; })
+        var domainEnd = maxValue;
+        var domainStart = minValue - (maxValue - minValue)*0.1
+
+        var y = d3.scaleLinear()
+            .domain([domainStart, domainEnd])
+            .range([ height, 0 ]);
+            svg.append("g")
+
+        svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2.5)
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
+        .attr("d", d3.line()
+            .x(function(d) { return x(d.x) })
+            .y(function(d) { return y(d.y) })
+    .curve(d3.curveCatmullRom)
+            )
+
+        svg.append("g")
+            .attr("fill", "white")
+            .attr("stroke", "steelblue")
+            .attr("stroke-width", 2)
+            .selectAll("circle")
+            .data(data)
+            .join("circle")
+            .attr("cx", d => x(d.x))
+            .attr("cy", d => y(d.y))
+            .attr("r", 3);
+
+        
+
+        svg.append("g")
+            .attr("stroke", "steelblue")
+            .attr('font-size', '16px')
+            .attr("text-anchor", "start")
+            .attr("font-family", "Noto Sans Light")
+            .selectAll("text")
+            .data(data)
+            .join("text")
+            .attr("x", d => x(d.x))
+            .attr("y", d => y(d.y))
+            .attr("transform", "translate(10, 15)")
+            .text( function (d) { return d.y; });
+
+
+    </script>
+</body>

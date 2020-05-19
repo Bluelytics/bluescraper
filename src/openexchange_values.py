@@ -1,8 +1,7 @@
-from subprocess import call
-import json
+import json, os, requests
+from database import insertCurrencyValue
 
-with open (".apikey", "r") as apifile:
-    api_key= apifile.read().replace('\n','')
+api_key = os.environ['OPENEX_API_KEY']
 
 import requests
 r = requests.get('https://openexchangerates.org/api/latest.json?app_id=' + api_key)
@@ -10,4 +9,4 @@ currencies_values = r.json()['rates']
 
 for k in currencies_values.keys():
     cur = currencies_values[k]
-    call(["../bluelytics/add_currencyvalue.sh", k, str(cur)])
+    insertCurrencyValue(k, cur)

@@ -27,6 +27,7 @@ def social_network_weekly_update(social_network):
             date_trunc('week', dttm) = date_trunc('week', current_date)
             and extract(dow from dttm) between 1 and 5
             and tipo = 'Blue'
+           order by dttm
     """)
     res = cursor.fetchall()
     cursor.close()
@@ -44,6 +45,9 @@ def social_network_weekly_update(social_network):
         firstValue = firstRes[2]
         lastValue = lastRes[2]
         changeAbs = lastValue-firstValue
+        plusChange = ''
+        if lastValue > firstValue:
+            plusChange = '+'
         changePerc = round((changeAbs / firstValue) * 100, 2)
         firstDate = firstRes[0].strftime('%d %b %Y')
         lastDate = lastRes[0].strftime('%d %b %Y')
@@ -56,8 +60,8 @@ def social_network_weekly_update(social_network):
 
                 template = template.replace('%Value_Inicio%', '{:.2f}'.format(firstValue))
                 template = template.replace('%Value_Fin%', '{:.2f}'.format(lastValue))
-                template = template.replace('%Delta_Value%', '{:.2f}'.format(changeAbs))
-                template = template.replace('%Delta_Percent%', '{:.2f}'.format(changePerc))
+                template = template.replace('%Delta_Value%', '{}{:.2f}'.format(plusChange, changeAbs))
+                template = template.replace('%Delta_Percent%', '{}{:.2f}'.format(plusChange, changePerc))
                 template = template.replace('%Array_Data%', json.dumps(arrayData))
                 template = template.replace('%Fecha_Inicio%', firstDate)
                 template = template.replace('%Fecha_Fin%', lastDate)
@@ -81,12 +85,12 @@ def social_network_weekly_update(social_network):
             return False
         
         messages = {
-            'instagram': 'Dolar Blue a {:.2f} \n\n\n #dolar #dolarblue #argentina #economia',
-            'facebook': 'Dolar Blue a {:.2f} - Visita https://bluelytics.com.ar para mantenerte actualizado/a!',
-            'twitter': 'Dolar Blue a {:.2f} - Visita https://bluelytics.com.ar para mantenerte actualizado/a!\n #dolar #dolarblue #argentina #economia'
+            'instagram': 'Evolucion Dolar Blue de esta semana! \n\n\n #dolar #dolarblue #argentina #economia',
+            'facebook': 'Evolucion Dolar Blue de esta semana! - Visita https://bluelytics.com.ar para mantenerte actualizado/a!',
+            'twitter': 'Evolucion Dolar Blue de esta semana! - Visita https://bluelytics.com.ar para mantenerte actualizado/a!\n #dolar #dolarblue #argentina #economia'
         }
 
-        status = send_post(social_network, messages[social_network].format(value_current_sell), s3_name)
+        status = send_post(social_network, messages[social_network], s3_name)
 
         if status == 200:
             connection = getConnection()

@@ -7,7 +7,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 RUN apt-get install -y gcc && \
-    python3 -m pip install requests psycopg2 beautifulsoup4 boto3 --no-cache-dir && \
+    python3 -m pip install requests psycopg2 beautifulsoup4 boto3 firebase-admin --no-cache-dir && \
     apt-get remove -y gcc && \
     rm -rf /var/lib/apt/lists/*
 
@@ -15,6 +15,9 @@ RUN echo "es_AR UTF-8" > /etc/locale.gen && \
     locale-gen
 
 RUN fc-cache -fv
+COPY bluelytics-mobile-firebase-adminsdk.json /
 COPY ./src /app
+
+ENV GOOGLE_APPLICATION_CREDENTIALS="/bluelytics-mobile-firebase-adminsdk.json"
 
 ENTRYPOINT /app/entrypoint.sh

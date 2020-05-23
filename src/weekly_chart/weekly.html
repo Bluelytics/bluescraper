@@ -8,6 +8,7 @@
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/d3.v5.min.js"></script>
+<script src="js/d3-annotation.min.js"></script>
 
 <style>
     body{
@@ -32,6 +33,26 @@
     }
 
 
+    .annotation path.connector {
+      stroke-dasharray: 1, 1;
+    }
+
+    .annotation-note-title {
+      font-weight: bold;
+    }
+
+    .annotation.xythreshold {
+      cursor: move;
+    }
+
+
+    .annotation text {
+      font-size: 1.2em;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+
 </style>
 
 </head>
@@ -53,18 +74,18 @@
                 <p class="valueDolar">%Value_Fin%</p>
             </div>
         </div>
-        <p class="percentChange positive">+%Delta_Value% (%Delta_Percent%%)</p>
+        <p class="percentChange positive">%Delta_Value% (%Delta_Percent%%)</p>
 
         <div class="container-fluid" id='blue'></div>
         <small class="float-sm-right" style="margin-top:15px;">https://bluelytics.com.ar - Semana %Fecha_Inicio% / %Fecha_Fin%</small>
 </div>
     <script>
 
-        var margin = {top: 20, right: 60, bottom: 30, left: 60},
+        var margin = {top: 60, right: 60, bottom: 60, left: 60},
             width = 800 - margin.left - margin.right,
             height = 450 - margin.top - margin.bottom;
-        // Example: [{x:"Lunes", y:127.23},{x:"Martes", y:128.50},{x:"Miércoles", y:130.40},{x:"Jueves", y:138.30}, {x:"Viernes", y:140.10}]
         var data = %Array_Data%;
+        //var data = [{x:"Lunes", y:129.23},{x:"Martes", y:124.50},{x:"Miércoles", y:124.50},{x:"Jueves", y:125.00}, {x:"Viernes", y:126.10}];
         var weekdays = ["Lunes","Martes","Miércoles","Jueves","Viernes"];
         var formatDay = function(d) {
             return weekdays[d % 5];      
@@ -89,7 +110,7 @@
         var minValue = d3.min(data, function(d) { return +d.y; })
         var maxValue = d3.max(data, function(d) { return +d.y; })
         var domainEnd = maxValue;
-        var domainStart = minValue - (maxValue - minValue)*0.1
+        var domainStart = minValue - (maxValue - minValue)*0.3
 
         var y = d3.scaleLinear()
             .domain([domainStart, domainEnd])
@@ -106,7 +127,7 @@
         .attr("d", d3.line()
             .x(function(d) { return x(d.x) })
             .y(function(d) { return y(d.y) })
-    .curve(d3.curveCatmullRom)
+    .curve(d3.curveMonotoneX)
             )
 
         svg.append("g")
@@ -120,21 +141,29 @@
             .attr("cy", d => y(d.y))
             .attr("r", 3);
 
-        
+    
+        const badgeAnnotations = data.map(d => {
+            return {
+            subject: {
+                text: d.y,
+                radius: 35
+            },
+            color: '#66a2e4',
+            type: d3.annotationBadge,
+            x: x(d.x),
+            y: y(d.y)
+            }
+        })
+
+
+        const makeAnnotations = d3
+            .annotation()
+            .type(d3.annotationLabel)
+            .annotations([...badgeAnnotations])
 
         svg.append("g")
-            .attr("stroke", "steelblue")
-            .attr('font-size', '16px')
-            .attr("text-anchor", "start")
-            .attr("font-family", "Noto Sans Light")
-            .selectAll("text")
-            .data(data)
-            .join("text")
-            .attr("x", d => x(d.x))
-            .attr("y", d => y(d.y))
-            .attr("transform", "translate(10, 15)")
-            .text( function (d) { return d.y; });
-
+            .attr("class", "annotation-group")
+            .call(makeAnnotations)
 
     </script>
 </body>

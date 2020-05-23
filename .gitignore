@@ -1,7 +1,5 @@
 *.pyc
-*.png
-*.txt
-*.json
+bluelytics-mobile-firebase-adminsdk.json
 docker_run.sh
 .env
 test/

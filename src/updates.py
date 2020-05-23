@@ -83,8 +83,8 @@ def send_update(social_network, value_current_buy, value_current_sell, oficial_c
     try:
         locale.setlocale(locale.LC_TIME, "es_AR.UTF-8")
         
-        shutil.copytree('alerts', '/test/%s' % social_network)
-        tmpFilename = '/test/%s/out.html' % social_network
+        shutil.copytree('alerts', '/tmp/%s' % social_network)
+        tmpFilename = '/tmp/%s/out.html' % social_network
         with open(tmpFilename, 'wt') as o:
             with open('alerts/update_template.html') as f:
                 template = f.read()
@@ -98,7 +98,7 @@ def send_update(social_network, value_current_buy, value_current_sell, oficial_c
                 o.write(template)
                 o.flush()
 
-        outName = '/test/%s.png' % social_network
+        outName = '/tmp/%s.png' % social_network
         widths = {'facebook': '960', 'instagram': '960', 'twitter': '1350'}
         heights = {'facebook': '720', 'instagram': '720', 'twitter': '706'}
         subprocess.run(['wkhtmltoimage', '--width', widths[social_network], '--height', heights[social_network], tmpFilename, outName])
@@ -119,7 +119,7 @@ def send_update(social_network, value_current_buy, value_current_sell, oficial_c
             'twitter': 'Dolar Blue a {:.2f} - Visita https://bluelytics.com.ar para mantenerte actualizado/a!'
         }
 
-        #status = send_post(social_network, messages[social_network].format(value_current_sell), s3_name)
+        status = send_post(social_network, messages[social_network].format(value_current_sell), s3_name)
         
         if status == 200:
             connection = getConnection()

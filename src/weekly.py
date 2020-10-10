@@ -74,7 +74,7 @@ def social_network_weekly_update(social_network):
         heights = {'facebook': '720', 'instagram': '720', 'twitter': '706'}
         subprocess.run(['wkhtmltoimage', '--debug-javascript', '--javascript-delay', '2000', '--width', widths[social_network], '--height', heights[social_network], tmpFilename, outName])
         
-        s3_name = '{}/{}.png'.format(datetime.datetime.today().strftime('%Y-%m-%d'), uuid.uuid4())
+        s3_name = '{}/{}-{}.png'.format(social_network, datetime.datetime.today().strftime('%Y-%m-%d'), uuid.uuid4())
         print('Uploading {}'.format(s3_name))
 
         s3_client = boto3.client('s3')
@@ -92,14 +92,15 @@ def social_network_weekly_update(social_network):
 
         status = send_post(social_network, messages[social_network], s3_name)
 
-        if status == 200:
-            connection = getConnection()
-            cursor = connection.cursor()
-            cursor.execute("insert into actualizaciones_sociales_weekly values(DEFAULT, %s, CURRENT_TIMESTAMP)",
-                (social_network,))
-            connection.commit()
-            cursor.close()
-            connection.close()
+        if status != 200:
+            print("Error!")
+        connection = getConnection()
+        cursor = connection.cursor()
+        cursor.execute("insert into actualizaciones_sociales_weekly values(DEFAULT, %s, CURRENT_TIMESTAMP)",
+            (social_network,))
+        connection.commit()
+        cursor.close()
+        connection.close()
 
     finally:
         locale.setlocale(locale.LC_TIME, "C")

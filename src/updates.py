@@ -103,7 +103,7 @@ def send_update(social_network, value_current_buy, value_current_sell, oficial_c
         heights = {'facebook': '720', 'instagram': '720', 'twitter': '706'}
         subprocess.run(['wkhtmltoimage', '--width', widths[social_network], '--height', heights[social_network], tmpFilename, outName])
         
-        s3_name = '{}/{}.png'.format(datetime.datetime.today().strftime('%Y-%m-%d'), uuid.uuid4())
+        s3_name = '{}/{}-{}.png'.format(social_network, datetime.datetime.today().strftime('%Y-%m-%d'), uuid.uuid4())
         print('Uploading {}'.format(s3_name))
 
         s3_client = boto3.client('s3')
@@ -120,15 +120,18 @@ def send_update(social_network, value_current_buy, value_current_sell, oficial_c
         }
 
         status = send_post(social_network, messages[social_network].format(value_current_sell), s3_name)
+        print('Status: {}'.format(status))
         
-        if status == 200:
-            connection = getConnection()
-            cursor = connection.cursor()
-            cursor.execute("insert into actualizaciones_sociales values(DEFAULT, %s, CURRENT_TIMESTAMP, %s, %s)",
-                (social_network, value_current_buy, value_current_sell))
-            connection.commit()
-            cursor.close()
-            connection.close()
+        if status != 200:
+            print("Error sending update!")
+
+        connection = getConnection()
+        cursor = connection.cursor()
+        cursor.execute("insert into actualizaciones_sociales values(DEFAULT, %s, CURRENT_TIMESTAMP, %s, %s)",
+            (social_network, value_current_buy, value_current_sell))
+        connection.commit()
+        cursor.close()
+        connection.close()
 
     finally:
         locale.setlocale(locale.LC_TIME, "C")

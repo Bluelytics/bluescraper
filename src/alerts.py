@@ -12,7 +12,7 @@ def evaluate_alerts():
         select
         date_trunc('minute', scraped_at), avg(value_sell) as value
         from dolar_values
-        where scraped_at > (now() - interval '2 hours')
+        where scraped_at > (now() - interval '6 hours')
         and scraped_at < (now() - interval '15 minutes')
         and source <> 'oficial'
         group by 1

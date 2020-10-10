@@ -92,7 +92,7 @@ def send_update(social_network, value_current_buy, value_current_sell, oficial_c
                 template = template.replace('%Blue_Compra%', '{:.2f}'.format(value_current_buy))
                 template = template.replace('%Blue_Venta%', '{:.2f}'.format(value_current_sell))
                 template = template.replace('%Oficial_Compra%', '{:.2f}'.format(oficial_current_buy))
-                template = template.replace('%Oficial_Venta%', '{:.2f}'.format(oficial_current_sell*Decimal(1.3)))
+                template = template.replace('%Oficial_Venta%', '{:.2f}'.format(oficial_current_sell*Decimal(1.65)))
 
                 template = template.replace('%FECHA%', datetime.datetime.now().strftime('%c'))
                 o.write(template)

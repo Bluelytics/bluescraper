@@ -1,7 +1,10 @@
 import datetime, shutil, tempfile, locale, subprocess, os, uuid, boto3
+from pytz import timezone
 from database import getConnection
 from decimal import Decimal
 from buffer import send_post
+
+buenos_aires = timezone("America/Buenos_Aires")
 
 def social_network_update(social_network, min_update_minutes, min_alert_minutes):
     connection = getConnection()
@@ -94,16 +97,17 @@ def send_update(social_network, value_current_buy, value_current_sell, oficial_c
                 template = template.replace('%Oficial_Compra%', '{:.2f}'.format(oficial_current_buy))
                 template = template.replace('%Oficial_Venta%', '{:.2f}'.format(oficial_current_sell*Decimal(1.65)))
 
-                template = template.replace('%FECHA%', datetime.datetime.now().strftime('%c'))
+                template = template.replace('%FECHA%', datetime.datetime.now(tz=buenos_aires).strftime('%c'))
                 o.write(template)
                 o.flush()
 
-        outName = '/tmp/%s.png' % social_network
+        outName = '/tmp/%s.jpg' % social_network
         widths = {'facebook': '960', 'instagram': '960', 'twitter': '1350'}
         heights = {'facebook': '720', 'instagram': '720', 'twitter': '706'}
         subprocess.run(['wkhtmltoimage', '--width', widths[social_network], '--height', heights[social_network], tmpFilename, outName])
+        subprocess.run(['jpegoptim', outName])
         
-        s3_name = '{}/{}-{}.png'.format(social_network, datetime.datetime.today().strftime('%Y-%m-%d'), uuid.uuid4())
+        s3_name = '{}/{}-{}.jpg'.format(social_network, datetime.datetime.today().strftime('%Y-%m-%d'), uuid.uuid4())
         print('Uploading {}'.format(s3_name))
 
         s3_client = boto3.client('s3')

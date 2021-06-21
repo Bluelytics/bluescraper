@@ -69,10 +69,11 @@ def social_network_weekly_update(social_network):
                 o.flush()
         locale.setlocale(locale.LC_TIME, "C")
 
-        outName = '/tmp/%s.png' % social_network
+        outName = '/tmp/%s.jpg' % social_network
         widths = {'facebook': '960', 'instagram': '960', 'twitter': '1350'}
         heights = {'facebook': '720', 'instagram': '720', 'twitter': '706'}
         subprocess.run(['wkhtmltoimage', '--debug-javascript', '--javascript-delay', '2000', '--width', widths[social_network], '--height', heights[social_network], tmpFilename, outName])
+        subprocess.run(['jpegoptim', outName])
         
         s3_name = '{}/{}-{}.png'.format(social_network, datetime.datetime.today().strftime('%Y-%m-%d'), uuid.uuid4())
         print('Uploading {}'.format(s3_name))

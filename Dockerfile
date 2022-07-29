@@ -2,6 +2,8 @@ FROM python:3.8-buster
 
 WORKDIR /app
 
+ENV PYTHONUNBUFFERED=1
+
 RUN apt-get update && \
     apt-get install -y debconf fonts-noto-extra postgresql-client xauth wkhtmltopdf locales jpegoptim && \
     apt-get install -y gcc && \

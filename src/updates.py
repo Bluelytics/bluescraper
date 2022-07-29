@@ -114,9 +114,7 @@ def send_update(social_network, value_current_buy, value_current_sell, oficial_c
         except ClientError as e:
             logging.error(e)
             return False
-        
-
-        
+                
         if value_current_sell > value_last_update:
             action = "subio"
         else:

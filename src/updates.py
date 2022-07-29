@@ -93,7 +93,7 @@ def send_update(social_network, value_current_buy, value_current_sell, oficial_c
                 template = template.replace('%Blue_Compra%', '{:.2f}'.format(value_current_buy))
                 template = template.replace('%Blue_Venta%', '{:.2f}'.format(value_current_sell))
                 template = template.replace('%Oficial_Compra%', '{:.2f}'.format(oficial_current_buy))
-                template = template.replace('%Oficial_Venta%', '{:.2f}'.format(oficial_current_sell*Decimal(1.65)))
+                template = template.replace('%Oficial_Venta%', '{:.2f}'.format(oficial_current_sell*Decimal(1.75)))
 
                 template = template.replace('%FECHA%', datetime.datetime.now(tz=buenos_aires).strftime('%c'))
                 o.write(template)
@@ -122,8 +122,8 @@ def send_update(social_network, value_current_buy, value_current_sell, oficial_c
 
         messages = {
             'instagram': 'El Dolar Libre/Blue {} a {:.2f} \n\n\n #dolar #dolarblue #argentina #economia',
-            'facebook': 'El Dolar Libre/Blue {} a {:.2f} - Visita https://bluelytics.com.ar para mantenerte actualizado/a!',
-            'twitter': 'El Dolar Libre/Blue {} a {:.2f} - Visita https://bluelytics.com.ar para mantenerte actualizado/a!'
+            'facebook': 'El Dolar Libre/Blue {} a {:.2f} - Visita https://bluelytics.com.ar para mantenerte al día!',
+            'twitter': 'El Dolar Libre/Blue {} a {:.2f} - Visita https://bluelytics.com.ar para mantenerte al día!'
         }
 
         status = send_post(social_network, messages[social_network].format(action, value_current_sell), s3_name)

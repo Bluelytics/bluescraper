@@ -87,9 +87,9 @@ def social_network_weekly_update(social_network):
         
         messages = {
             'instagram': 'Evolucion Dolar Blue de esta semana! \n\n\n #dolar #dolarblue #argentina #economia',
-            'facebook': 'Evolucion Dolar Blue de esta semana! - Visita https://bluelytics.com.ar para mantenerte actualizado/a!',
-            'twitter': 'Evolucion Dolar Blue de esta semana! - Visita https://bluelytics.com.ar para mantenerte actualizado/a!\n #dolar #dolarblue #argentina #economia',
-            'linkedin': 'Evolucion Dolar Blue de esta semana! - Visita https://bluelytics.com.ar para mantenerte actualizado/a!\n #dolar #dolarblue #argentina #economia'
+            'facebook': 'Evolucion Dolar Blue de esta semana! - Visita https://bluelytics.com.ar para mantenerte al día!',
+            'twitter': 'Evolucion Dolar Blue de esta semana! - Visita https://bluelytics.com.ar para mantenerte al día!\n #dolar #dolarblue #argentina #economia',
+            'linkedin': 'Evolucion Dolar Blue de esta semana! - Visita https://bluelytics.com.ar para mantenerte al día!\n #dolar #dolarblue #argentina #economia'
         }
 
         status = send_post(social_network, messages[social_network], s3_name)

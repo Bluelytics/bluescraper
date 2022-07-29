@@ -6,7 +6,7 @@ from buffer import send_post
 
 buenos_aires = timezone("America/Buenos_Aires")
 
-def social_network_update(social_network, min_update_minutes, min_alert_minutes):
+def social_network_update(social_network, min_alert_minutes):
     connection = getConnection()
     cursor = connection.cursor()
 
@@ -72,9 +72,7 @@ def social_network_update(social_network, min_update_minutes, min_alert_minutes)
     
     if diff_update.seconds > min_alert_minutes*60: # At least <alert> minutes since last update
 
-        if diff_update.seconds > min_update_minutes*60: # At least <update> minutes since last update
-            send_update(social_network, value_current_buy, value_current_sell, oficial_current_buy, oficial_current_sell, value_last_update)
-        elif value_current_sell > value_max or value_current_sell < value_min: # Alert
+        if value_current_sell > value_max or value_current_sell < value_min: # Alert
             change_perc = abs((float(value_current_sell / value_last_update) - 1.0)*100) # Percentage change since last alert
             
             if change_perc >= 0.75:
@@ -117,13 +115,20 @@ def send_update(social_network, value_current_buy, value_current_sell, oficial_c
             logging.error(e)
             return False
         
+
+        
+        if value_current_sell > value_last_update:
+            action = "subio"
+        else:
+            action = "bajo"
+
         messages = {
-            'instagram': 'Dolar Blue a {:.2f} \n\n\n #dolar #dolarblue #argentina #economia',
-            'facebook': 'Dolar Blue a {:.2f} - Visita https://bluelytics.com.ar para mantenerte actualizado/a!',
-            'twitter': 'Dolar Blue a {:.2f} - Visita https://bluelytics.com.ar para mantenerte actualizado/a!'
+            'instagram': 'El Dolar Libre/Blue {} a {:.2f} \n\n\n #dolar #dolarblue #argentina #economia',
+            'facebook': 'El Dolar Libre/Blue {} a {:.2f} - Visita https://bluelytics.com.ar para mantenerte actualizado/a!',
+            'twitter': 'El Dolar Libre/Blue {} a {:.2f} - Visita https://bluelytics.com.ar para mantenerte actualizado/a!'
         }
 
-        status = send_post(social_network, messages[social_network].format(value_current_sell), s3_name)
+        status = send_post(social_network, messages[social_network].format(action, value_current_sell), s3_name)
         print('Status: {}'.format(status))
         
         if status != 200:
@@ -144,6 +149,6 @@ def send_update(social_network, value_current_buy, value_current_sell, oficial_c
 now = datetime.datetime.today()
 
 if now.weekday() < 5 and now.hour >= 13 and now.hour < 22:
-    social_network_update('twitter', 60*3, 15) # 3 hours for updates, 15 minutes for alerts
-    social_network_update('instagram', 60*6, 60) # 6 hours for updates, 1 hour for alerts
-    social_network_update('facebook', 60*48, 60*3) # 2 days for updates, 3 hours for alerts
+    social_network_update('twitter', 15) # 15 minutes
+    social_network_update('instagram', 60) # 1 hour
+    social_network_update('facebook', 60) # 1 hour

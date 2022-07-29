@@ -3,3 +3,4 @@ bluelytics-mobile-firebase-adminsdk.json
 docker_run.sh
 .env
 test/
+test.py

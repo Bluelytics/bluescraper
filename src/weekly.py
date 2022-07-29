@@ -13,7 +13,7 @@ def social_network_weekly_update(social_network):
     """, (social_network,))
     res = cursor.fetchone()
 
-    if res[0] < 5:
+    if res[0] < 5 and res[0] is not None:
         print('Already sent')
         return
 
@@ -88,7 +88,8 @@ def social_network_weekly_update(social_network):
         messages = {
             'instagram': 'Evolucion Dolar Blue de esta semana! \n\n\n #dolar #dolarblue #argentina #economia',
             'facebook': 'Evolucion Dolar Blue de esta semana! - Visita https://bluelytics.com.ar para mantenerte actualizado/a!',
-            'twitter': 'Evolucion Dolar Blue de esta semana! - Visita https://bluelytics.com.ar para mantenerte actualizado/a!\n #dolar #dolarblue #argentina #economia'
+            'twitter': 'Evolucion Dolar Blue de esta semana! - Visita https://bluelytics.com.ar para mantenerte actualizado/a!\n #dolar #dolarblue #argentina #economia',
+            'linkedin': 'Evolucion Dolar Blue de esta semana! - Visita https://bluelytics.com.ar para mantenerte actualizado/a!\n #dolar #dolarblue #argentina #economia'
         }
 
         status = send_post(social_network, messages[social_network], s3_name)
@@ -115,3 +116,4 @@ if now.weekday() == 4 and now.hour >= 21:
     social_network_weekly_update('twitter')
     social_network_weekly_update('instagram')
     social_network_weekly_update('facebook')
+    social_network_weekly_update('linkedin')

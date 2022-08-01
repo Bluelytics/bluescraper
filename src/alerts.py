@@ -57,10 +57,15 @@ def evaluate_alerts():
     alerta_at_last = res[5]
     now = datetime.datetime.now()
 
+    if value_min is None:
+        value_min = 0.0
+    if value_max is None:
+        value_max = 9999999999999999.0
+
     diff_alerta = now - alerta_at_last
     
     if diff_alerta.seconds > 10*60: # At least 10 minutes since last alert
-        if value_max is None or value_min is None or float(value_current_sell) > value_max or float(value_current_sell) < value_min:
+        if float(value_current_sell) > value_max or float(value_current_sell) < value_min:
             change_perc = abs((float(value_current_sell / value_last_alert) - 1.0)*100) # Percentage change since last alert
             if change_perc > 0.5:
                 

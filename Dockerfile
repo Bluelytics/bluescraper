@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED=1
 RUN apt-get update && \
     apt-get install -y debconf fonts-noto-extra postgresql-client xauth wkhtmltopdf locales jpegoptim && \
     apt-get install -y gcc && \
-    python3 -m pip install requests psycopg2 beautifulsoup4 boto3 firebase-admin pytz --no-cache-dir && \
+    python3 -m pip install requests psycopg2 beautifulsoup4 boto3 firebase-admin pytz lxml --no-cache-dir && \
     apt-get remove -y gcc && \
     rm -rf /var/lib/apt/lists/*
 

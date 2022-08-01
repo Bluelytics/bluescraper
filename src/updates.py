@@ -72,7 +72,7 @@ def social_network_update(social_network, min_alert_minutes):
     
     if diff_update.seconds > min_alert_minutes*60: # At least <alert> minutes since last update
 
-        if value_current_sell > value_max or value_current_sell < value_min: # Alert
+        if value_max is None or value_min is None or float(value_current_sell) > value_max or float(value_current_sell) < value_min: # Alert
             change_perc = abs((float(value_current_sell / value_last_update) - 1.0)*100) # Percentage change since last alert
             
             if change_perc >= 0.75:

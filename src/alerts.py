@@ -60,7 +60,7 @@ def evaluate_alerts():
     diff_alerta = now - alerta_at_last
     
     if diff_alerta.seconds > 10*60: # At least 10 minutes since last alert
-        if value_current_sell > value_max or value_current_sell < value_min:
+        if value_max is None or value_min is None or float(value_current_sell) > value_max or float(value_current_sell) < value_min:
             change_perc = abs((float(value_current_sell / value_last_alert) - 1.0)*100) # Percentage change since last alert
             if change_perc > 0.5:
                 

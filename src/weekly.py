@@ -70,8 +70,8 @@ def social_network_weekly_update(social_network):
         locale.setlocale(locale.LC_TIME, "C")
 
         outName = '/tmp/%s.jpg' % social_network
-        widths = {'facebook': '960', 'instagram': '960', 'twitter': '1350'}
-        heights = {'facebook': '720', 'instagram': '720', 'twitter': '706'}
+        widths = {'facebook': '960', 'instagram': '960', 'twitter': '1350', 'linkedin': '1200'}
+        heights = {'facebook': '720', 'instagram': '720', 'twitter': '706', 'linkedin': '628'}
         subprocess.run(['wkhtmltoimage', '--debug-javascript', '--javascript-delay', '2000', '--width', widths[social_network], '--height', heights[social_network], tmpFilename, outName])
         subprocess.run(['jpegoptim', outName])
         

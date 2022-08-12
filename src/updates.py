@@ -106,8 +106,8 @@ def send_update(social_network, value_current_buy, value_current_sell, oficial_c
                 o.flush()
 
         outName = '/tmp/%s.jpg' % social_network
-        widths = {'facebook': '960', 'instagram': '960', 'twitter': '1350'}
-        heights = {'facebook': '720', 'instagram': '720', 'twitter': '706'}
+        widths = {'facebook': '960', 'instagram': '960', 'twitter': '1350', 'linkedin': '1200'}
+        heights = {'facebook': '720', 'instagram': '720', 'twitter': '706', 'linkedin': '628'}
         subprocess.run(['wkhtmltoimage', '--width', widths[social_network], '--height', heights[social_network], tmpFilename, outName])
         subprocess.run(['jpegoptim', outName])
         

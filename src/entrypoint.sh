@@ -5,6 +5,7 @@ echo "Running scrapers..."
 python scrape_ambito.py
 python scrape_oficial.py
 python scrape_cronista.py
+python scrape_lanacion.py
 
 echo "Refreshing dollar..."
 # Refresh last dolar
